@@ -1,0 +1,83 @@
+server:
+  port: 9529
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: MyNewPass@123
+
+  aop:
+    proxy-target-class: true
+  main:
+    allow-bean-definition-overriding: true
+  messages:
+    encoding: utf-8
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+
+  redis:
+    database: 11
+    #host: 192.168.31.120
+    host: localhost
+    port: 6379
+    password:
+    jedis:
+      pool:
+        min-idle: 8
+        max-idle: 500
+        max-active: 2000
+        max-wait: 10000
+    timeout: 0
+
+
+#mybatis plus 设置
+mybatis-plus:
+  type-aliases-package: com.plus.join.plus.entity
+  mapper-locations: classpath:mapper/*/*.xml
+  configuration:
+    jdbc-type-for-null: null
+  global-config:
+    # 关闭 mybatis-plus的 banner
+    banner: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ['httptrace', 'metrics']
+
+
+ytboot:
+  # 是否异步记录用户操作日志
+  openAopLog: true
+  # 单次最大批量入库数量
+  max:
+    batch:
+      insert:
+        num: 1000
+  shiro:
+    # 后端免认证接口 url
+    anonUrl: /login,/logout/**,/regist,/user/check/**,/wifi/issue/add,/swagger-resources/**,/webjars/**,/v2/**,/swagger-ui.html/**,/favicon.ico
+    # token有效期，单位秒
+    jwtTimeOut: 3600
+  # Swagger相关配置
+  swagger:
+    basePackage: com.mixchains.ytboot
+    title: YtBoot VUE API
+    description: YtBoot VUE API Document.
+    version: 2.0
+    author: mixchains.com
+    url: http://www.mixchains.com
+    email: mixchains@163.com
+    license: Apache 2.0
+    licenseUrl: https://www.apache.org/licenses/LICENSE-2.0.html
+
+# 最大导出数量
+export:
+  maxCount: 10000
