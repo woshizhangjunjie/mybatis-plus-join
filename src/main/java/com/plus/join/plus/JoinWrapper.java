@@ -34,6 +34,10 @@ public class JoinWrapper<L, R> implements JoinWrapperAbstract<SFunction<L, ?>, S
     private Map<String, String> leftEqCriteria = new HashMap<>();
     //右表=条件
     private Map<String, String> rightEqCriteria = new HashMap<>();
+    //左表=条件
+    private Map<String, String> leftLikeCriteria = new HashMap<>();
+    //右表=条件
+    private Map<String, String> rightLikeCriteria = new HashMap<>();
 
     public JoinWrapper(Class joinClass) {
         TableName annotation = AnnotationUtils.findAnnotation(joinClass, TableName.class);
@@ -53,40 +57,64 @@ public class JoinWrapper<L, R> implements JoinWrapperAbstract<SFunction<L, ?>, S
 
     @Override
     public JoinWrapper on(SFunction<L, ?> left, SFunction<R, ?> right) {
-        joinKeyLeft = columnToString(left, true);
-        joinKeyRight = columnToString(right, true);
+        joinKeyLeft = columnToString(left);
+        joinKeyRight = columnToString(right);
         return this;
     }
 
     @Override
     public JoinWrapper leftEq(boolean condition, SFunction<L, ?> column, Object value) {
-        if (condition) rightEqCriteria.put(columnToString(column, true), String.valueOf(value));
+        if (condition) leftEqCriteria.put(columnToString(column), String.valueOf(value));
         return this;
     }
 
     @Override
     public JoinWrapper leftEq(SFunction<L, ?> column, Object value) {
-        rightEqCriteria.put(columnToString(column, true), String.valueOf(value));
+        leftEqCriteria.put(columnToString(column), String.valueOf(value));
         return this;
     }
 
     @Override
     public JoinWrapper rightEq(boolean condition, SFunction<R, ?> column, Object value) {
-        if (condition) rightEqCriteria.put(columnToString(column, true), String.valueOf(value));
+        if (condition) rightEqCriteria.put(columnToString(column), String.valueOf(value));
         return this;
     }
 
     @Override
     public JoinWrapper rightEq(SFunction<R, ?> column, Object value) {
-        rightEqCriteria.put(columnToString(column, true), String.valueOf(value));
+        rightEqCriteria.put(columnToString(column), String.valueOf(value));
         return this;
     }
 
-    private String columnToString(SFunction<?, ?> column, boolean onlyColumn) {
-        return getColumn(LambdaUtils.resolve(column), onlyColumn);
+    @Override
+    public JoinWrapper leftLike(boolean condition, SFunction<L, ?> column, Object value) {
+        if (condition) leftLikeCriteria.put(columnToString(column), String.valueOf(value));
+        return this;
     }
 
-    private String getColumn(SerializedLambda lambda, boolean onlyColumn) throws MybatisPlusException {
+    @Override
+    public JoinWrapper leftLike(SFunction<L, ?> column, Object value) {
+        leftLikeCriteria.put(columnToString(column), String.valueOf(value));
+        return this;
+    }
+
+    @Override
+    public JoinWrapper rightLike(boolean condition, SFunction<R, ?> column, Object value) {
+        if (condition) rightLikeCriteria.put(columnToString(column), String.valueOf(value));
+        return this;
+    }
+
+    @Override
+    public JoinWrapper rightLike(SFunction<R, ?> column, Object value) {
+        rightLikeCriteria.put(columnToString(column), String.valueOf(value));
+        return this;
+    }
+
+    private String columnToString(SFunction<?, ?> column) {
+        return getColumn(LambdaUtils.resolve(column));
+    }
+
+    private String getColumn(SerializedLambda lambda) throws MybatisPlusException {
         //TODO
         return humpToUnderline(PropertyNamer.methodToProperty(lambda.getImplMethodName()));
     }

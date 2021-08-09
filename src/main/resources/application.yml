@@ -36,14 +36,15 @@ spring:
     timeout: 0
 
 
-#mybatis plus ÉèÖÃ
+#mybatis plus è®¾ç½®
 mybatis-plus:
   type-aliases-package: com.plus.join.plus.entity
   mapper-locations: classpath:mapper/*/*.xml
   configuration:
     jdbc-type-for-null: null
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #å¼€å¯sqlæ—¥å¿—
   global-config:
-    # ¹Ø±Õ mybatis-plusµÄ banner
+    # å…³é—­ mybatis-plusçš„ banner
     banner: false
 
 management:
@@ -54,19 +55,19 @@ management:
 
 
 ytboot:
-  # ÊÇ·ñÒì²½¼ÇÂ¼ÓÃ»§²Ù×÷ÈÕÖ¾
+  # æ˜¯å¦å¼‚æ­¥è®°å½•ç”¨æˆ·æ“ä½œæ—¥å¿—
   openAopLog: true
-  # µ¥´Î×î´óÅúÁ¿Èë¿âÊıÁ¿
+  # å•æ¬¡æœ€å¤§æ‰¹é‡å…¥åº“æ•°é‡
   max:
     batch:
       insert:
         num: 1000
   shiro:
-    # ºó¶ËÃâÈÏÖ¤½Ó¿Ú url
+    # åç«¯å…è®¤è¯æ¥å£ url
     anonUrl: /login,/logout/**,/regist,/user/check/**,/wifi/issue/add,/swagger-resources/**,/webjars/**,/v2/**,/swagger-ui.html/**,/favicon.ico
-    # tokenÓĞĞ§ÆÚ£¬µ¥Î»Ãë
+    # tokenæœ‰æ•ˆæœŸï¼Œå•ä½ç§’
     jwtTimeOut: 3600
-  # SwaggerÏà¹ØÅäÖÃ
+  # Swaggerç›¸å…³é…ç½®
   swagger:
     basePackage: com.mixchains.ytboot
     title: YtBoot VUE API
@@ -78,6 +79,6 @@ ytboot:
     license: Apache 2.0
     licenseUrl: https://www.apache.org/licenses/LICENSE-2.0.html
 
-# ×î´óµ¼³öÊıÁ¿
+# æœ€å¤§å¯¼å‡ºæ•°é‡
 export:
   maxCount: 10000

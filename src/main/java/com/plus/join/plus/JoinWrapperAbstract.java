@@ -35,4 +35,28 @@ public interface JoinWrapperAbstract<L, R> {
     JoinWrapper rightEq(boolean condition, R column, Object value);
 
     JoinWrapper rightEq(R column, Object value);
+
+    /**
+     * 左表的like条件查询
+     *
+     * @param condition
+     * @param column
+     * @param value
+     * @return
+     */
+    JoinWrapper leftLike(boolean condition, L column, Object value);
+
+    JoinWrapper leftLike(L column, Object value);
+
+    /**
+     * 右表的like条件查询
+     *
+     * @param condition
+     * @param column
+     * @param value
+     * @return
+     */
+    JoinWrapper rightLike(boolean condition, R column, Object value);
+
+    JoinWrapper rightLike(R column, Object value);
 }

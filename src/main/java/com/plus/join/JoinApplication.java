@@ -35,8 +35,8 @@ public class JoinApplication {
     public void test() {
         JoinWrapper<User, Wallet> joinWrapper = new JoinWrapper<>(Wallet.class);
         joinWrapper.on(User::getId, Wallet::getUserId);
-        joinWrapper.leftEq(User::getName, "名字");
+        joinWrapper.rightLike(Wallet::getTotal, "2");
         List<User> users = userMapper.selectJoin(joinWrapper);
-        System.out.println(users);
+        System.err.println(users);
     }
 }
