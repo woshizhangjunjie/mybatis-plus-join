@@ -1,6 +1,7 @@
 package com.plus.join;
 
 import com.plus.join.plus.JoinWrapper;
+import com.plus.join.plus.constant.JoinType;
 import com.plus.join.plus.dao.UserMapper;
 import com.plus.join.plus.dao.WalletMapper;
 import com.plus.join.plus.entity.User;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @SpringBootApplication(scanBasePackages = "com.plus.*")
@@ -38,5 +40,15 @@ public class JoinApplication {
         joinWrapper.rightLike(Wallet::getTotal, "2");
         List<User> users = userMapper.selectJoin(joinWrapper);
         System.err.println(users);
+    }
+
+    @RequestMapping(value = "test2", method = RequestMethod.POST)
+    public void test2() {
+        JoinWrapper<User, Wallet> joinWrapper = new JoinWrapper<>(Wallet.class, JoinType.LEFT);
+        joinWrapper.on(User::getId, Wallet::getUserId);
+        joinWrapper.rightLike(Wallet::getTotal, "2");
+        joinWrapper.leftEq(User::getName,"名字");
+        List<Map> maps = userMapper.selectMapJoin(joinWrapper);
+        System.err.println(maps);
     }
 }

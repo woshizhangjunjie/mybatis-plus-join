@@ -7,16 +7,16 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
 
 /**
- * 连表返回主表实体集合
+ * 连表返回Map集合
  *
  * @author 张俊杰
  * @since 2021-08-06
  */
-public class SelectJoin extends AbstractMethod {
+public class SelectMapJoin extends AbstractMethod {
 
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        String sqlMethod = "selectMapJoin";
+        String sqlMethod = "selectJoin";
         SqlSource sqlSource = languageDriver.createSqlSource(configuration, SqlParse.parseJoinSql(tableInfo), modelClass);
         return this.addSelectMappedStatementForTable(mapperClass, sqlMethod, sqlSource, tableInfo);
     }

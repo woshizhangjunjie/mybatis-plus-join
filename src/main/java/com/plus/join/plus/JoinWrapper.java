@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.LambdaUtils;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.core.toolkit.support.SerializedLambda;
+import com.plus.join.plus.constant.JoinType;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.ibatis.reflection.property.PropertyNamer;
@@ -26,6 +27,8 @@ public class JoinWrapper<L, R> implements JoinWrapperAbstract<SFunction<L, ?>, S
 
     //关联的表名
     private String tableName;
+    //关联方式 默认INNER
+    private JoinType joinType = JoinType.INNER;
     //关联键左
     private String joinKeyLeft;
     //关联键右
@@ -34,25 +37,41 @@ public class JoinWrapper<L, R> implements JoinWrapperAbstract<SFunction<L, ?>, S
     private Map<String, String> leftEqCriteria = new HashMap<>();
     //右表=条件
     private Map<String, String> rightEqCriteria = new HashMap<>();
-    //左表=条件
+    //左表like条件
     private Map<String, String> leftLikeCriteria = new HashMap<>();
-    //右表=条件
+    //右表like条件
     private Map<String, String> rightLikeCriteria = new HashMap<>();
 
     public JoinWrapper(Class joinClass) {
-        TableName annotation = AnnotationUtils.findAnnotation(joinClass, TableName.class);
-        Optional.ofNullable(annotation).orElseThrow(() -> new MybatisPlusException(joinClass.getName() + "类型没有 @TableName 注解"));
-        this.tableName = annotation.value();
+        this.tableName = verify(joinClass).value();
     }
 
-    public JoinWrapper(String tableName) {
+    public JoinWrapper(Class joinClass, JoinType joinType) {
+        this.tableName = verify(joinClass).value();
+        this.joinType = joinType;
+    }
+
+    private JoinWrapper(String tableName) {
         this.tableName = tableName;
     }
 
+    private JoinWrapper(String tableName, JoinType joinType) {
+        this.tableName = tableName;
+        this.joinType = joinType;
+    }
+
     public static <L, R> JoinWrapper<L, R> join(Class joinClass) {
+        return new JoinWrapper<>(verify(joinClass).value());
+    }
+
+    public static <L, R> JoinWrapper<L, R> join(Class joinClass, JoinType joinType) {
+        return new JoinWrapper<>(verify(joinClass).value(), joinType);
+    }
+
+    private static TableName verify(Class joinClass) {
         TableName annotation = AnnotationUtils.findAnnotation(joinClass, TableName.class);
-        Optional.ofNullable(annotation).orElseThrow(() -> new MybatisPlusException(joinClass.getName() + "类型没有 @TableName 注解"));
-        return new JoinWrapper<>(annotation.value());
+        Optional.ofNullable(annotation).orElseThrow(() -> new MybatisPlusException(joinClass.getName() + "类型没有 com.baomidou.mybatisplus.annotation.TableName 注解"));
+        return annotation;
     }
 
     @Override
@@ -115,7 +134,6 @@ public class JoinWrapper<L, R> implements JoinWrapperAbstract<SFunction<L, ?>, S
     }
 
     private String getColumn(SerializedLambda lambda) throws MybatisPlusException {
-        //TODO
         return humpToUnderline(PropertyNamer.methodToProperty(lambda.getImplMethodName()));
     }
 

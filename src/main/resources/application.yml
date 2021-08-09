@@ -42,7 +42,9 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*/*.xml
   configuration:
     jdbc-type-for-null: null
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启sql日志
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启sql日志
+      #    改为自己写的
+    log-impl: com.plus.join.plus.log.MybatisPlusOutImpl
   global-config:
     # 关闭 mybatis-plus的 banner
     banner: false
