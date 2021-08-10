@@ -41,6 +41,10 @@ public class JoinWrapper<L, R> implements JoinWrapperAbstract<SFunction<L, ?>, S
     private Map<String, String> leftLikeCriteria = new HashMap<>();
     //右表like条件
     private Map<String, String> rightLikeCriteria = new HashMap<>();
+    //左表=条件
+    private Map<String, String> leftBetweenCriteria = new HashMap<>();
+    //右表=条件
+    private Map<String, String> rightBetweenCriteria = new HashMap<>();
 
     public JoinWrapper(Class joinClass) {
         this.tableName = verify(joinClass).value();
@@ -128,6 +132,31 @@ public class JoinWrapper<L, R> implements JoinWrapperAbstract<SFunction<L, ?>, S
         rightLikeCriteria.put(columnToString(column), String.valueOf(value));
         return this;
     }
+
+    @Override
+    public JoinWrapper leftBetween(boolean condition, SFunction<R, ?> column, Object value1, Object value2) {
+        if (condition) leftBetweenCriteria.put(columnToString(column), value1 + " AND " + value2);
+        return this;
+    }
+
+    @Override
+    public JoinWrapper leftBetween(SFunction<R, ?> column, Object value1, Object value2) {
+        leftBetweenCriteria.put(columnToString(column), value1 + " AND " + value2);
+        return this;
+    }
+
+    @Override
+    public JoinWrapper rightBetween(boolean condition, SFunction<R, ?> column, Object value1, Object value2) {
+        if (condition) rightBetweenCriteria.put(columnToString(column), value1 + " AND " + value2);
+        return this;
+    }
+
+    @Override
+    public JoinWrapper rightBetween(SFunction<R, ?> column, Object value1, Object value2) {
+        rightBetweenCriteria.put(columnToString(column), value1 + " AND " + value2);
+        return this;
+    }
+
 
     private String columnToString(SFunction<?, ?> column) {
         return getColumn(LambdaUtils.resolve(column));

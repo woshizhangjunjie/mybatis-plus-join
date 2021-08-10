@@ -1,5 +1,6 @@
 package com.plus.join;
 
+import com.github.pagehelper.PageHelper;
 import com.plus.join.plus.JoinWrapper;
 import com.plus.join.plus.constant.JoinType;
 import com.plus.join.plus.dao.UserMapper;
@@ -10,7 +11,6 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,9 +35,10 @@ public class JoinApplication {
 
     @RequestMapping(value = "test", method = RequestMethod.POST)
     public void test() {
+        PageHelper.startPage(0,9);
         JoinWrapper<User, Wallet> joinWrapper = new JoinWrapper<>(Wallet.class);
         joinWrapper.on(User::getId, Wallet::getUserId);
-        joinWrapper.rightLike(Wallet::getTotal, "2");
+        joinWrapper.rightBetween(Wallet::getTotal, 2,"11");
         List<User> users = userMapper.selectJoin(joinWrapper);
         System.err.println(users);
     }

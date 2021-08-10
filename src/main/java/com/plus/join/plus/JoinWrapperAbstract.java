@@ -59,4 +59,30 @@ public interface JoinWrapperAbstract<L, R> {
     JoinWrapper rightLike(boolean condition, R column, Object value);
 
     JoinWrapper rightLike(R column, Object value);
+
+    /**
+     * 左表的between条件查询
+     *
+     * @param condition
+     * @param column    字段
+     * @param value1    值1
+     * @param value2    值2
+     * @return
+     */
+    JoinWrapper leftBetween(boolean condition, R column, Object value1, Object value2);
+
+    JoinWrapper leftBetween(R column, Object value1, Object value2);
+
+    /**
+     * 右表的between条件查询
+     *
+     * @param condition
+     * @param column    字段
+     * @param value1    值1
+     * @param value2    值2
+     * @return
+     */
+    JoinWrapper rightBetween(boolean condition, R column, Object value1, Object value2);
+
+    JoinWrapper rightBetween(R column, Object value1, Object value2);
 }

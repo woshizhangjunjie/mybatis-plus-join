@@ -23,6 +23,15 @@ public class SqlParse {
                 + " <foreach collection=\"joinWrapper.rightLikeCriteria\" index=\"key\" item=\"value\" >"
                 + " AND ${joinWrapper.tableName}.${key} like '%${value}%'"
                 + "</foreach>  "
+                //between筛选
+                + " <foreach collection=\"joinWrapper.leftBetweenCriteria\" index=\"key\" item=\"value\" >"
+                + " AND (" + tableInfo.getTableName() + ".${key} BETWEEN ${value})"
+                + "</foreach>  "
+
+                + " <foreach collection=\"joinWrapper.rightBetweenCriteria\" index=\"key\" item=\"value\" >"
+                + " AND (${joinWrapper.tableName}.${key} BETWEEN ${value})"
+                + "</foreach>  "
+
                 + "</script>";
     }
 }
