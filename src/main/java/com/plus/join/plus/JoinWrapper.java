@@ -41,9 +41,9 @@ public class JoinWrapper<L, R> implements JoinWrapperAbstract<SFunction<L, ?>, S
     private Map<String, String> leftLikeCriteria = new HashMap<>();
     //右表like条件
     private Map<String, String> rightLikeCriteria = new HashMap<>();
-    //左表=条件
+    //左表between条件
     private Map<String, String> leftBetweenCriteria = new HashMap<>();
-    //右表=条件
+    //右表between条件
     private Map<String, String> rightBetweenCriteria = new HashMap<>();
 
     public JoinWrapper(Class joinClass) {
