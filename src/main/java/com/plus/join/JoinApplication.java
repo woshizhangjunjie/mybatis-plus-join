@@ -39,6 +39,9 @@ public class JoinApplication {
         JoinWrapper<User, Wallet> joinWrapper = new JoinWrapper<>(Wallet.class);
         joinWrapper.on(User::getId, Wallet::getUserId);
         joinWrapper.rightBetween(Wallet::getTotal, 2,"11");
+        joinWrapper.rightOrderByAsc(Wallet::getId,Wallet::getTotal);
+        joinWrapper.leftOrderByAsc(User::getName);
+        joinWrapper.rightOrderByAsc(Wallet::getTotal);
         List<User> users = userMapper.selectJoin(joinWrapper);
         System.err.println(users);
     }

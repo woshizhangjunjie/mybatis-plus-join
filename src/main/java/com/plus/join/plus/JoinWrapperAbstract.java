@@ -85,4 +85,21 @@ public interface JoinWrapperAbstract<L, R> {
     JoinWrapper rightBetween(boolean condition, R column, Object value1, Object value2);
 
     JoinWrapper rightBetween(R column, Object value1, Object value2);
+
+    JoinWrapper leftOrderByDesc(boolean condition, L... column);
+
+    JoinWrapper leftOrderByDesc(L... column);
+
+    JoinWrapper rightOrderByDesc(boolean condition, R... column);
+
+    JoinWrapper rightOrderByDesc(R... column);
+
+    JoinWrapper leftOrderByAsc(boolean condition, L... column);
+
+    JoinWrapper leftOrderByAsc(L... column);
+
+    JoinWrapper rightOrderByAsc(boolean condition, R... column);
+
+    JoinWrapper rightOrderByAsc(R... column);
+
 }

@@ -11,9 +11,7 @@ import lombok.Setter;
 import org.apache.ibatis.reflection.property.PropertyNamer;
 import org.springframework.core.annotation.AnnotationUtils;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * 连表构造器
@@ -45,6 +43,14 @@ public class JoinWrapper<L, R> implements JoinWrapperAbstract<SFunction<L, ?>, S
     private Map<String, String> leftBetweenCriteria = new HashMap<>();
     //右表between条件
     private Map<String, String> rightBetweenCriteria = new HashMap<>();
+    //左表的desc排序条件
+    private List<String> leftOrderByDescCriteria = new ArrayList<>();
+    //左表的asc排序条件
+    private List<String> leftOrderByAscCriteria = new ArrayList<>();
+    //右表的desc排序条件
+    private List<String> rightOrderByDescCriteria = new ArrayList<>();
+    //右表的asc排序条件
+    private List<String> rightOrderByAscCriteria = new ArrayList<>();
 
     public JoinWrapper(Class joinClass) {
         this.tableName = verify(joinClass).value();
@@ -154,6 +160,78 @@ public class JoinWrapper<L, R> implements JoinWrapperAbstract<SFunction<L, ?>, S
     @Override
     public JoinWrapper rightBetween(SFunction<R, ?> column, Object value1, Object value2) {
         rightBetweenCriteria.put(columnToString(column), value1 + " AND " + value2);
+        return this;
+    }
+
+    @Override
+    public JoinWrapper leftOrderByDesc(boolean condition, SFunction<L, ?>... column) {
+        if (condition) {
+            for (SFunction<L, ?> rsFunction : column) {
+                leftOrderByDescCriteria.add(columnToString(rsFunction));
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public JoinWrapper leftOrderByDesc(SFunction<L, ?>... column) {
+        for (SFunction<L, ?> rsFunction : column) {
+            leftOrderByDescCriteria.add(columnToString(rsFunction));
+        }
+        return this;
+    }
+
+    @Override
+    public JoinWrapper rightOrderByDesc(boolean condition, SFunction<R, ?>... column) {
+        if (condition) {
+            for (SFunction<R, ?> rsFunction : column) {
+                rightOrderByDescCriteria.add(columnToString(rsFunction));
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public JoinWrapper rightOrderByDesc(SFunction<R, ?>... column) {
+        for (SFunction<R, ?> rsFunction : column) {
+            rightOrderByDescCriteria.add(columnToString(rsFunction));
+        }
+        return this;
+    }
+
+    @Override
+    public JoinWrapper leftOrderByAsc(boolean condition, SFunction<L, ?>... column) {
+        if (condition) {
+            for (SFunction<L, ?> rsFunction : column) {
+                leftOrderByAscCriteria.add(columnToString(rsFunction));
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public JoinWrapper leftOrderByAsc(SFunction<L, ?>... column) {
+        for (SFunction<L, ?> rsFunction : column) {
+            leftOrderByAscCriteria.add(columnToString(rsFunction));
+        }
+        return this;
+    }
+
+    @Override
+    public JoinWrapper rightOrderByAsc(boolean condition, SFunction<R, ?>... column) {
+        if (condition) {
+            for (SFunction<R, ?> rsFunction : column) {
+                rightOrderByAscCriteria.add(columnToString(rsFunction));
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public JoinWrapper rightOrderByAsc(SFunction<R, ?>... column) {
+        for (SFunction<R, ?> rsFunction : column) {
+            rightOrderByAscCriteria.add(columnToString(rsFunction));
+        }
         return this;
     }
 
