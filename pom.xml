@@ -11,6 +11,8 @@
     <groupId>com.plus</groupId>
     <artifactId>mybatis-plus-join</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
     <name>join</name>
     <description>Demo project for Spring Boot</description>
     <properties>

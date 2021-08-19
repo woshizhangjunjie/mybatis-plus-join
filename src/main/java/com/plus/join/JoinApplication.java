@@ -35,13 +35,11 @@ public class JoinApplication {
 
     @RequestMapping(value = "test", method = RequestMethod.POST)
     public void test() {
-        PageHelper.startPage(0,9);
-        JoinWrapper<User, Wallet> joinWrapper = new JoinWrapper<>(Wallet.class);
-        joinWrapper.on(User::getId, Wallet::getUserId);
-        joinWrapper.rightBetween(Wallet::getTotal, 2,"11");
-        joinWrapper.rightOrderByAsc(Wallet::getId,Wallet::getTotal);
-        joinWrapper.leftOrderByAsc(User::getName);
-        joinWrapper.rightOrderByAsc(Wallet::getTotal);
+        PageHelper.startPage(0,9);//目前只支持pageHelper分页插件
+        JoinWrapper<User, Wallet> joinWrapper = new JoinWrapper<>(Wallet.class);//泛型必填 构造器中的类型为被关联表
+        joinWrapper.on(User::getId, Wallet::getUserId);//键关联
+        joinWrapper.rightBetween(Wallet::getTotal, 2,11);//被关联表的between筛选
+        joinWrapper.leftOrderByAsc(User::getId,User::getName);//主表的排序
         List<User> users = userMapper.selectJoin(joinWrapper);
         System.err.println(users);
     }
