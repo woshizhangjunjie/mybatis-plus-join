@@ -15,6 +15,14 @@ public class SqlParse {
                 + " <foreach collection=\"joinWrapper.rightEqCriteria\" index=\"key\" item=\"value\" >"
                 + " AND ${joinWrapper.tableName}.${key} = #{value}"
                 + "</foreach>  "
+                //ne筛选
+                + " <foreach collection=\"joinWrapper.leftEqCriteria\" index=\"key\" item=\"value\" >"
+                + " AND " + tableInfo.getTableName() + ".${key} != #{value}"
+                + "</foreach>  "
+
+                + " <foreach collection=\"joinWrapper.rightEqCriteria\" index=\"key\" item=\"value\" >"
+                + " AND ${joinWrapper.tableName}.${key} != #{value}"
+                + "</foreach>  "
                 //like筛选
                 + " <foreach collection=\"joinWrapper.leftLikeCriteria\" index=\"key\" item=\"value\" >"
                 + " AND " + tableInfo.getTableName() + ".${key} like '%${value}%'"

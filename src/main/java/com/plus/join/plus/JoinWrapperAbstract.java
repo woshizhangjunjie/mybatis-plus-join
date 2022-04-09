@@ -37,6 +37,30 @@ public interface JoinWrapperAbstract<L, R> {
     JoinWrapper rightEq(R column, Object value);
 
     /**
+     * 右表的!=条件查询
+     *
+     * @param condition
+     * @param column
+     * @param value
+     * @return
+     */
+    JoinWrapper rightNe(boolean condition, R column, Object value);
+
+    JoinWrapper rightNe(R column, Object value);
+
+    /**
+     * 右表的!=条件查询
+     *
+     * @param condition
+     * @param column
+     * @param value
+     * @return
+     */
+    JoinWrapper leftNe(boolean condition, L column, Object value);
+
+    JoinWrapper leftNe(L column, Object value);
+
+    /**
      * 左表的like条件查询
      *
      * @param condition
@@ -69,9 +93,9 @@ public interface JoinWrapperAbstract<L, R> {
      * @param value2    值2
      * @return
      */
-    JoinWrapper leftBetween(boolean condition, R column, Object value1, Object value2);
+    JoinWrapper leftBetween(boolean condition, L column, Object value1, Object value2);
 
-    JoinWrapper leftBetween(R column, Object value1, Object value2);
+    JoinWrapper leftBetween(L column, Object value1, Object value2);
 
     /**
      * 右表的between条件查询
@@ -90,16 +114,23 @@ public interface JoinWrapperAbstract<L, R> {
 
     JoinWrapper leftOrderByDesc(L... column);
 
+    JoinWrapper leftOrderByDesc(L column);
+
     JoinWrapper rightOrderByDesc(boolean condition, R... column);
 
     JoinWrapper rightOrderByDesc(R... column);
+
+    JoinWrapper rightOrderByDesc(R column);
 
     JoinWrapper leftOrderByAsc(boolean condition, L... column);
 
     JoinWrapper leftOrderByAsc(L... column);
 
+    JoinWrapper leftOrderByAsc(L column);
+
     JoinWrapper rightOrderByAsc(boolean condition, R... column);
 
     JoinWrapper rightOrderByAsc(R... column);
 
+    JoinWrapper rightOrderByAsc(R column);
 }

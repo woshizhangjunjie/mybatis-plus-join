@@ -35,6 +35,10 @@ public class JoinWrapper<L, R> implements JoinWrapperAbstract<SFunction<L, ?>, S
     private Map<String, String> leftEqCriteria = new HashMap<>();
     //右表=条件
     private Map<String, String> rightEqCriteria = new HashMap<>();
+    //左表!=条件
+    private Map<String, String> leftNeCriteria = new HashMap<>();
+    //右表!=条件
+    private Map<String, String> rightNeCriteria = new HashMap<>();
     //左表like条件
     private Map<String, String> leftLikeCriteria = new HashMap<>();
     //右表like条件
@@ -116,6 +120,30 @@ public class JoinWrapper<L, R> implements JoinWrapperAbstract<SFunction<L, ?>, S
     }
 
     @Override
+    public JoinWrapper rightNe(boolean condition, SFunction<R, ?> column, Object value) {
+        if (condition) rightNeCriteria.put(columnToString(column), String.valueOf(value));
+        return this;
+    }
+
+    @Override
+    public JoinWrapper rightNe(SFunction<R, ?> column, Object value) {
+        rightNeCriteria.put(columnToString(column), String.valueOf(value));
+        return this;
+    }
+
+    @Override
+    public JoinWrapper leftNe(boolean condition, SFunction<L, ?> column, Object value) {
+        if (condition) rightNeCriteria.put(columnToString(column), String.valueOf(value));
+        return this;
+    }
+
+    @Override
+    public JoinWrapper leftNe(SFunction<L, ?> column, Object value) {
+        leftNeCriteria.put(columnToString(column), String.valueOf(value));
+        return this;
+    }
+
+    @Override
     public JoinWrapper leftLike(boolean condition, SFunction<L, ?> column, Object value) {
         if (condition) leftLikeCriteria.put(columnToString(column), String.valueOf(value));
         return this;
@@ -140,13 +168,13 @@ public class JoinWrapper<L, R> implements JoinWrapperAbstract<SFunction<L, ?>, S
     }
 
     @Override
-    public JoinWrapper leftBetween(boolean condition, SFunction<R, ?> column, Object value1, Object value2) {
+    public JoinWrapper leftBetween(boolean condition, SFunction<L, ?> column, Object value1, Object value2) {
         if (condition) leftBetweenCriteria.put(columnToString(column), value1 + " AND " + value2);
         return this;
     }
 
     @Override
-    public JoinWrapper leftBetween(SFunction<R, ?> column, Object value1, Object value2) {
+    public JoinWrapper leftBetween(SFunction<L, ?> column, Object value1, Object value2) {
         leftBetweenCriteria.put(columnToString(column), value1 + " AND " + value2);
         return this;
     }
@@ -182,6 +210,12 @@ public class JoinWrapper<L, R> implements JoinWrapperAbstract<SFunction<L, ?>, S
     }
 
     @Override
+    public JoinWrapper leftOrderByDesc(SFunction<L, ?> column) {
+        leftOrderByDescCriteria.add(columnToString(column));
+        return this;
+    }
+
+    @Override
     public JoinWrapper rightOrderByDesc(boolean condition, SFunction<R, ?>... column) {
         if (condition) {
             for (SFunction<R, ?> rsFunction : column) {
@@ -196,6 +230,12 @@ public class JoinWrapper<L, R> implements JoinWrapperAbstract<SFunction<L, ?>, S
         for (SFunction<R, ?> rsFunction : column) {
             rightOrderByDescCriteria.add(columnToString(rsFunction));
         }
+        return this;
+    }
+
+    @Override
+    public JoinWrapper rightOrderByDesc(SFunction<R, ?> column) {
+        rightOrderByDescCriteria.add(columnToString(column));
         return this;
     }
 
@@ -218,6 +258,12 @@ public class JoinWrapper<L, R> implements JoinWrapperAbstract<SFunction<L, ?>, S
     }
 
     @Override
+    public JoinWrapper leftOrderByAsc(SFunction<L, ?> column) {
+        leftOrderByAscCriteria.add(columnToString(column));
+        return this;
+    }
+
+    @Override
     public JoinWrapper rightOrderByAsc(boolean condition, SFunction<R, ?>... column) {
         if (condition) {
             for (SFunction<R, ?> rsFunction : column) {
@@ -232,6 +278,12 @@ public class JoinWrapper<L, R> implements JoinWrapperAbstract<SFunction<L, ?>, S
         for (SFunction<R, ?> rsFunction : column) {
             rightOrderByAscCriteria.add(columnToString(rsFunction));
         }
+        return this;
+    }
+
+    @Override
+    public JoinWrapper rightOrderByAsc(SFunction<R, ?> column) {
+        rightOrderByAscCriteria.add(columnToString(column));
         return this;
     }
 

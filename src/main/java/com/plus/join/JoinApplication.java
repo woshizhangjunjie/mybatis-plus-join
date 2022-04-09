@@ -44,12 +44,12 @@ public class JoinApplication {
         System.err.println(users);
     }
 
-    @RequestMapping(value = "test2", method = RequestMethod.POST)
+    @RequestMapping(value = "test2", method = RequestMethod.GET)
     public void test2() {
         JoinWrapper<User, Wallet> joinWrapper = new JoinWrapper<>(Wallet.class, JoinType.LEFT);
         joinWrapper.on(User::getId, Wallet::getUserId);
         joinWrapper.rightLike(Wallet::getTotal, "2");
-        joinWrapper.leftEq(User::getName,"名字");
+        joinWrapper.leftNe(User::getName,"a");
         List<Map> maps = userMapper.selectMapJoin(joinWrapper);
         System.err.println(maps);
     }
