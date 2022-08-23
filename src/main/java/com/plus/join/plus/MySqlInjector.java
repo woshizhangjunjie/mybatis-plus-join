@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
 import com.plus.join.plus.methods.SelectJoin;
 import com.plus.join.plus.methods.SelectMapJoin;
+import com.plus.join.plus.methods.SelectPlusJoin;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class MySqlInjector extends DefaultSqlInjector {
         List<AbstractMethod> methodList = super.getMethodList(mapperClass);
         methodList.add(new SelectJoin());
         methodList.add(new SelectMapJoin());
+        methodList.add(new SelectPlusJoin());
         return methodList;
     }
 }

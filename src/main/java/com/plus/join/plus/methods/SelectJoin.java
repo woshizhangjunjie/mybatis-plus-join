@@ -16,7 +16,7 @@ public class SelectJoin extends AbstractMethod {
 
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        String sqlMethod = "selectMapJoin";
+        String sqlMethod = "selectJoin";
         SqlSource sqlSource = languageDriver.createSqlSource(configuration, SqlParse.parseJoinSql(tableInfo), modelClass);
         return this.addSelectMappedStatementForTable(mapperClass, sqlMethod, sqlSource, tableInfo);
     }
